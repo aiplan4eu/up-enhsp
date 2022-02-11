@@ -28,7 +28,6 @@ class ENHSPsolver(Solver):
         return 'enhsp'
 
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
-        #print(pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'))
         base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename]
         return self.manage_parameters(base_command)
 
