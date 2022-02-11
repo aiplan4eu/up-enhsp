@@ -54,7 +54,7 @@ setup(name='up_enhsp',
       author_email='l.bonassi005@unibs.it',
       packages=['up_enhsp'],
       package_data={
-          "": ["ENHSP/enhsp-dist/*", "ENHSP/enhsp-dist/libs/*"],
+          "": ["ENHSP/enhsp.jar","ENHSP/libs/*"],
       },
       cmdclass={
           'build_py': InstallENHSP,
