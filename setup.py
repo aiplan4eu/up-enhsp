@@ -50,7 +50,7 @@ class InstallENHSPdevelop(develop):
 setup(name='up_enhsp',
       version='0.0.1',
       description='up_enhsp',
-      author='Luigi Bonassi',
+      author='UNIBS Team',
       author_email='l.bonassi005@unibs.it',
       packages=['up_enhsp'],
       package_data={
