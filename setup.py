@@ -51,7 +51,7 @@ setup(name='up_enhsp',
       version='0.0.1',
       description='up_enhsp',
       author='UNIBS Team',
-      author_email='l.bonassi005@unibs.it',
+      author_email='enrico.scala@unibs.it',
       packages=['up_enhsp'],
       package_data={
           "": ["ENHSP/enhsp.jar","ENHSP/libs/*"],
