@@ -3,13 +3,10 @@ from unified_planning.shortcuts import *
 from unified_planning.io.pddl_reader import PDDLReader
 import unified_planning.transformers
 from unittest import TestCase
+import pkg_resources
 
 
 class ENHSPtest(TestCase):
-
-    def setUp(self) -> None:
-        env = get_env()
-        env.factory.add_solver('enhsp', 'up_enhsp', 'ENHSPsolver')
 
     def test_enhsp(self):
         Location = UserType('Location')
@@ -44,8 +41,7 @@ class ENHSPtest(TestCase):
 
     def test_enhsp_from_pddl(self):
         reader = PDDLReader()
-        pddl_problem = reader.parse_problem('./PDDL/NumRover.pddl',
-                                            './PDDL/pfile1')
+        pddl_problem = reader.parse_problem(pkg_resources.resource_filename(__name__, 'PDDL/NumRover.pddl'), pkg_resources.resource_filename(__name__, 'PDDL/pfile1'))
 
         with OneshotPlanner(name='enhsp') as planner:
             plan = planner.solve(pddl_problem)
