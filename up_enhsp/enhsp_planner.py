@@ -60,7 +60,7 @@ class ENHSPsolver(PDDLSolver):
     def _result_status(self, problem: 'unified_planning.model.Problem', plan: Optional['unified_planning.plan.Plan']) -> int:
         '''Takes a problem and a plan and returns the status that represents this plan.
         The possible status with their interpretation can be found in the up.plan file.'''
-        return up.solvers.results.PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else unified_planning.solvers.results.PlanGenerationResultStatus.SOLVED_SATISFICING
+        return unified_planning.solvers.results.PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else unified_planning.solvers.results.PlanGenerationResultStatus.SOLVED_SATISFICING
 
     @staticmethod
     def supports(problem_kind: 'ProblemKind') -> bool:
