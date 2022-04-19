@@ -24,7 +24,7 @@ class ENHSPsolver(PDDLSolver):
         self._needs_requirements = False
 
     @property
-    def name() -> str:
+    def name(self) -> str:
         return 'enhsp'
 
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
