@@ -23,7 +23,7 @@ class ENHSPsolver(PDDLSolver):
         self.heuristic = heuristic
         self._needs_requirements = False
 
-    @staticmethod
+    @property
     def name() -> str:
         return 'enhsp'
 
