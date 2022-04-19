@@ -24,6 +24,7 @@ long_description = \
 
 def install_ENHSP():
     subprocess.run(['git', 'clone', '-b', ENHSP_TAG, ENHSP_REPO])
+    shutil.rmtree(ENHSP_dst,ignore_errors=True)
     shutil.move(ENHSP_PUBLIC, ENHSP_dst)
     curr_dir = os.getcwd()
     os.chdir(ENHSP_dst)

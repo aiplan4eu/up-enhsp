@@ -9,13 +9,11 @@ from typing import IO, Callable, Optional, Dict, List, Tuple
 
 
 
+
 class ENHSPsolver(PDDLSolver):
 
     def destroy(self):
         pass
-
-    DEFAULT_SAT_CONFIGURATION = 'sat-hmrp'
-    DEFAULT_OPT_CONFIGURATION = 'opt-hrmax'
 
     def __init__(self, search_algorithm: Optional[str] = None, heuristic: Optional[str] = None):
         super().__init__()
@@ -36,8 +34,6 @@ class ENHSPsolver(PDDLSolver):
             command += ['-s', self.search_algorithm]
         if self.heuristic is not None:
             command += ['-h', self.heuristic]
-        if self.search_algorithm is None and self.heuristic is None:
-            command += ['-planner', self.DEFAULT_SAT_CONFIGURATION]
         return command
 
     def _plan_from_file(self, problem: 'unified_planning.model.Problem', plan_filename: str) -> 'unified_planning.plan.Plan':
@@ -60,7 +56,7 @@ class ENHSPsolver(PDDLSolver):
     def _result_status(self, problem: 'unified_planning.model.Problem', plan: Optional['unified_planning.plan.Plan']) -> int:
         '''Takes a problem and a plan and returns the status that represents this plan.
         The possible status with their interpretation can be found in the up.plan file.'''
-        return up.solvers.results.PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else unified_planning.solvers.results.PlanGenerationResultStatus.SOLVED_SATISFICING
+        return unified_planning.solvers.results.PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else unified_planning.solvers.results.PlanGenerationResultStatus.SOLVED_SATISFICING
 
     @staticmethod
     def supports(problem_kind: 'ProblemKind') -> bool:
@@ -91,3 +87,29 @@ class ENHSPsolver(PDDLSolver):
     def is_oneshot_planner() -> bool:
         return True
 
+class ENHSPSatSolver(ENHSPsolver):
+    
+    @staticmethod
+    def name() -> str:
+        return 'SAT-enhsp'  
+        
+    def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
+        base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, 
+        '-sp', plan_filename,'-s gbfs','-h hmrp','-ht true']
+        return self.manage_parameters(base_command)
+
+class ENHSPOptSolver(ENHSPsolver):
+    
+    @staticmethod
+    def name() -> str:
+        return 'OPT-enhsp'  
+        
+    def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
+        base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, 
+        '-sp', plan_filename,'-s','WAStar','-h','hrmax']
+        return self.manage_parameters(base_command)
+    
+    def _result_status(self, problem: 'unified_planning.model.Problem', plan: Optional['unified_planning.plan.Plan']) -> int:
+        '''Takes a problem and a plan and returns the status that represents this plan.
+        The possible status with their interpretation can be found in the up.plan file.'''
+        return unified_planning.solvers.results.PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else unified_planning.solvers.results.PlanGenerationResultStatus.SOLVED_OPTIMALLY
