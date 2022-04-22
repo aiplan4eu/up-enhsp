@@ -89,8 +89,8 @@ class ENHSPsolver(PDDLSolver):
 
 class ENHSPSatSolver(ENHSPsolver):
     
-    @staticmethod
-    def name() -> str:
+    @property
+    def name(self) -> str:
         return 'SAT-enhsp'  
         
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
@@ -100,14 +100,18 @@ class ENHSPSatSolver(ENHSPsolver):
 
 class ENHSPOptSolver(ENHSPsolver):
     
-    @staticmethod
-    def name() -> str:
+    @property
+    def name(self) -> str:
         return 'OPT-enhsp'  
         
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, 
         '-sp', plan_filename,'-s','WAStar','-h','hrmax']
         return self.manage_parameters(base_command)
+    
+    @staticmethod
+    def satisfies(optimality_guarantee) -> bool:
+        return True
     
     def _result_status(self, problem: 'unified_planning.model.Problem', plan: Optional['unified_planning.plan.Plan']) -> int:
         '''Takes a problem and a plan and returns the status that represents this plan.
