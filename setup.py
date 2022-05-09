@@ -49,7 +49,7 @@ class InstallENHSPdevelop(develop):
 
 
 setup(name='up_enhsp',
-      version='0.0.1',
+      version='0.0.1.dev1',
       description='up_enhsp',
       author='UNIBS Team',
       author_email='enrico.scala@unibs.it',
