@@ -12,7 +12,7 @@ credits = Credits('ENHSP',
                   'https://sites.google.com/view/enhsp/',
                   'GPL',
                   'Expressive Numeric Heuristic Search Planner.',
-                  'ENHSP is an expressive classical, linear and non linear numeric planner.')
+                  'ENHSP is a planner supporting (sub)optimal classical and numeric planning with linear and non-linear expressions.')
 
 class ENHSPEngine(PDDLPlanner):
 
@@ -48,6 +48,7 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_numbers('CONTINUOUS_NUMBERS')  # type: ignore
         supported_kind.set_numbers('DISCRETE_NUMBERS')  # type: ignore
         supported_kind.set_typing('FLAT_TYPING')  # type: ignore
+        supported_kind.set_typing('HIERARCHICAL_TYPING')  # type: ignore
         supported_kind.set_fluents_type('NUMERIC_FLUENTS')  # type: ignore
         supported_kind.set_conditions_kind('NEGATIVE_CONDITIONS')  # type: ignore
         supported_kind.set_conditions_kind('DISJUNCTIVE_CONDITIONS')  # type: ignore
@@ -77,7 +78,7 @@ class ENHSPSatEngine(ENHSPEngine):
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
-                   '-s gbfs','-h hmrp','-ht true']
+                   '-s','gbfs','-h','hadd']
         return command
 
 
