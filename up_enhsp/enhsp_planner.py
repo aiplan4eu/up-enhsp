@@ -44,6 +44,7 @@ class ENHSPEngine(PDDLPlanner):
     @staticmethod
     def supported_kind() -> bool:
         supported_kind = ProblemKind()
+        supported_kind.set_problem_class('ACTION_BASED')  # type: ignore
         supported_kind.set_numbers('CONTINUOUS_NUMBERS')  # type: ignore
         supported_kind.set_numbers('DISCRETE_NUMBERS')  # type: ignore
         supported_kind.set_typing('FLAT_TYPING')  # type: ignore
