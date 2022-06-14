@@ -42,7 +42,7 @@ class ENHSPEngine(PDDLPlanner):
         return PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else PlanGenerationResultStatus.SOLVED_SATISFICING
 
     @staticmethod
-    def supported_kind() -> bool:
+    def supported_kind() -> 'ProblemKind':
         supported_kind = ProblemKind()
         supported_kind.set_problem_class('ACTION_BASED')  # type: ignore
         supported_kind.set_numbers('CONTINUOUS_NUMBERS')  # type: ignore
@@ -65,7 +65,7 @@ class ENHSPEngine(PDDLPlanner):
         return problem_kind <= ENHSPEngine.supported_kind()
 
     @staticmethod
-    def get_credits(**kwargs) -> Optional[up.engines.Credits]:
+    def get_credits(**kwargs) -> Optional['Credits']:
         return credits
 
 
