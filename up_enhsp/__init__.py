@@ -1,3 +1,3 @@
-from .enhsp_planner import ENHSPsolver
-from .enhsp_planner import ENHSPSatSolver
-from .enhsp_planner import ENHSPOptSolver
+from .enhsp_planner import ENHSPEngine
+from .enhsp_planner import ENHSPSatEngine
+from .enhsp_planner import ENHSPOptEngine
