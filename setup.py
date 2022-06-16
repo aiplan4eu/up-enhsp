@@ -12,7 +12,7 @@ import shutil
 ENHSP_dst = './up_enhsp/ENHSP'
 ENHSP_PUBLIC = 'ENHSP-Public'
 COMPILE_CMD = './compile'
-ENHSP_TAG = 'enhsp20-0.9.3'
+ENHSP_TAG = 'enhsp20-0.9.2'
 ENHSP_REPO = 'https://gitlab.com/enricos83/ENHSP-Public'
 
 long_description = \
@@ -49,7 +49,7 @@ class InstallENHSPdevelop(develop):
 
 
 setup(name='up_enhsp',
-      version='0.0.3',
+      version='0.0.4',
       description='up_enhsp',
       author='UNIBS Team',
       author_email='enrico.scala@unibs.it',
