@@ -5,7 +5,7 @@ on: push
 jobs:
   deploy-test-pypi:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
 
     steps:
     - name: Checkout repo
@@ -29,13 +29,7 @@ jobs:
         python3 setup.py sdist --format=gztar
         # Wheel file
         python3 setup.py bdist_wheel
-#    - name: Upload to PyPI
-#      uses: pypa/gh-action-pypi-publish@master
-#      with:
-#        password: ${{ secrets.PYPI_API_TOKEN }}
-    - name: Upload to TestPyPI
+    - name: Upload to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
-        user: __token__
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
+        password: ${{ secrets.PYPI_API_TOKEN }}
