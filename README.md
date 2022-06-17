@@ -7,11 +7,11 @@ After cloning this repository run ```pip install up-enhsp```. up-enhsp can also 
 ENHSP will be downloaded and compiled directory from the public repository of ENHSP.
 ENHSP, and therefore this integrator requires the openjdk 17 installed on your machine.
 
-## Planning approaches of UP supported:
+## Planning approaches of UP supported
 Numeric Planning
 
-## Default configuration: 
+## Default configuration
 Greedy Best First Search as search algorithm + the hadd heuristic.
 
-## Operative modes of UP currently supported:
+## Operative modes of UP currently supported
 One shot planning
