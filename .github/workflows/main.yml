@@ -1,15 +1,18 @@
 name: CD
 
-on: push
-  paths:
-    # Trigger only when docs/wiki directory changes
-    - 'up_enhsp/**'
-    - 'setup.py'
+on:
+  push:
+    paths:
+      - 'up_enhsp/**'
+      - 'setup.py'
+    branches:
+      # Only on master branch
+      - master
+
 jobs:
-  deploy-test-pypi:
+  deploy-pypi:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-  
+
     steps:
     - name: Checkout repo
       uses: actions/checkout@master
