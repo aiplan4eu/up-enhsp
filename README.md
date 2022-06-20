@@ -15,3 +15,10 @@ Greedy Best First Search as search algorithm + the hadd heuristic.
 
 ## Operative modes of UP currently supported
 One shot planning
+
+
+## Acknowledgments
+
+<img src="https://www.aiplan4eu-project.eu/wp-content/uploads/2021/07/euflag.png" width="60" height="40">
+
+This library is being developed for the AIPlan4EU H2020 project (https://aiplan4eu-project.eu) that is funded by the European Commission under grant agreement number 101016442.
