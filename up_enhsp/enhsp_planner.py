@@ -58,6 +58,8 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_effects_kind('INCREASE_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('DECREASE_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')  # type: ignore
+        supported_kind.set_quality_metrics("ACTIONS_COST")
+        supported_kind.set_quality_metrics("PLAN_LENGTH")
         return supported_kind
 
     @staticmethod
