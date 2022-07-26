@@ -2,7 +2,7 @@ import pkg_resources # type: ignore
 import unified_planning as up
 from unified_planning.engines.results import PlanGenerationResultStatus
 from unified_planning.model import ProblemKind
-from unified_planning.engines import PDDLPlanner, Credits
+from unified_planning.engines import PDDLPlanner, Credits, LogMessage
 from typing import Optional, List, Union
 
 
@@ -36,10 +36,19 @@ class ENHSPEngine(PDDLPlanner):
         base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename]
         return self._manage_parameters(base_command)
 
-    def _result_status(self, problem: 'up.model.Problem', plan: Optional['up.plan.Plan']) -> 'PlanGenerationResultStatus':
-        '''Takes a problem and a plan and returns the status that represents this plan.
-        The possible status with their interpretation can be found in the up.plan file.'''
-        return PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else PlanGenerationResultStatus.SOLVED_SATISFICING
+    def _result_status(
+        self,
+        problem: 'up.model.Problem',
+        plan: Optional['up.plans.Plan'],
+        retval: int = 0,
+        log_messages: Optional[List['LogMessage']] = None,
+    ) -> 'PlanGenerationResultStatus':
+        if retval != 0:
+            return PlanGenerationResultStatus.INTERNAL_ERROR
+        elif plan is None:
+            return PlanGenerationResultStatus.UNSOLVABLE_PROVEN
+        else:
+            return PlanGenerationResultStatus.SOLVED_SATISFICING
 
     @staticmethod
     def supported_kind() -> 'ProblemKind':
@@ -100,7 +109,16 @@ class ENHSPOptEngine(ENHSPEngine):
     def satisfies(optimality_guarantee: 'up.engines.engine.OptimalityGuarantee') -> bool:
         return True
 
-    def _result_status(self, problem: 'up.model.Problem', plan: Optional['up.plan.Plan']) -> 'PlanGenerationResultStatus':
-        '''Takes a problem and a plan and returns the status that represents this plan.
-        The possible status with their interpretation can be found in the up.plan file.'''
-        return PlanGenerationResultStatus.UNSOLVABLE_PROVEN if plan is None else up.engines.results.PlanGenerationResultStatus.SOLVED_OPTIMALLY
+    def _result_status(
+        self,
+        problem: 'up.model.Problem',
+        plan: Optional['up.plans.Plan'],
+        retval: int = 0,
+        log_messages: Optional[List['LogMessage']] = None,
+    ) -> 'PlanGenerationResultStatus':
+        if retval != 0:
+            return PlanGenerationResultStatus.INTERNAL_ERROR
+        elif plan is None:
+            return PlanGenerationResultStatus.UNSOLVABLE_PROVEN
+        else:
+            return PlanGenerationResultStatus.SOLVED_OPTIMALLY
