@@ -55,6 +55,8 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_conditions_kind('EXISTENTIAL_CONDITIONS')  # type: ignore
         supported_kind.set_conditions_kind('UNIVERSAL_CONDITIONS')  # type: ignore
         supported_kind.set_conditions_kind('EQUALITY')  # type: ignore
+        supported_kind.set_problem_type('SIMPLE_NUMERIC_PLANNING')  # type: ignore
+        supported_kind.set_problem_type('GENERAL_NUMERIC_PLANNING')  # type: ignore
         supported_kind.set_effects_kind('INCREASE_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('DECREASE_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')  # type: ignore
@@ -95,6 +97,16 @@ class ENHSPOptEngine(ENHSPEngine):
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
                    '-s','WAStar','-h','hrmax']
         return command
+
+    @staticmethod
+    def supported_kind() -> 'ProblemKind':
+        supported_kind = ENHSPEngine.supported_kind()
+        supported_kind.unset_problem_type('GENERAL_NUMERIC_PLANNING')
+        return supported_kind
+
+    @staticmethod
+    def supports(problem_kind: 'ProblemKind') -> bool:
+        return problem_kind <= ENHSPOptEngine.supported_kind()
 
     @staticmethod
     def satisfies(optimality_guarantee: 'up.engines.engine.OptimalityGuarantee') -> bool:
