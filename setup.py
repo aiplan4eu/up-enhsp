@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
+from ast import Raise
 import subprocess
+import warnings
+import sys
 
 from setuptools import setup
 from setuptools.command.build_py import build_py
@@ -21,8 +24,20 @@ long_description = \
  ============================================================
 """
 
+def check_version_jdk():
+    result = subprocess.check_output(['java', '--version']).decode('utf-8') 
+    if 'openjdk' in result:
+        versione = result.split(" ")[1].split(".")[0]
+        if int(versione) >= 18:
+            return True
+        else:
+            return False
+    else:
+        return False
 
 def install_ENHSP():
+    if not check_version_jdk():
+        raise ValueError('ENHSP require jdk version >= 16')
     subprocess.run(['git', 'clone', '-b', ENHSP_TAG, ENHSP_REPO])
     shutil.rmtree(ENHSP_dst,ignore_errors=True)
     shutil.move(ENHSP_PUBLIC, ENHSP_dst)
