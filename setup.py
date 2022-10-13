@@ -17,6 +17,7 @@ ENHSP_PUBLIC = 'ENHSP-Public'
 COMPILE_CMD = './compile'
 ENHSP_TAG = 'enhsp20-0.9.4'
 ENHSP_REPO = 'https://gitlab.com/enricos83/ENHSP-Public'
+JDK_REQUIRE = 17
 
 long_description = \
     """============================================================
@@ -26,18 +27,15 @@ long_description = \
 
 def check_version_jdk():
     result = subprocess.check_output(['java', '--version']).decode('utf-8') 
-    if 'openjdk' in result:
-        versione = result.split(" ")[1].split(".")[0]
-        if int(versione) >= 18:
-            return True
-        else:
-            return False
+    versione = result.split(" ")[1].split(".")[0]
+    if int(versione) >= JDK_REQUIRE:
+        return True
     else:
         return False
 
 def install_ENHSP():
     if not check_version_jdk():
-        raise ValueError('ENHSP require jdk version >= 16')
+        raise ValueError(f.'ENHSP require jdk version >= {JDK_REQUIRE}')
     subprocess.run(['git', 'clone', '-b', ENHSP_TAG, ENHSP_REPO])
     shutil.rmtree(ENHSP_dst,ignore_errors=True)
     shutil.move(ENHSP_PUBLIC, ENHSP_dst)

@@ -48,6 +48,11 @@ class ENHSPEngine(PDDLPlanner):
         elif plan is None:
             return PlanGenerationResultStatus.UNSOLVABLE_PROVEN
         else:
+            if not problem.quality_metrics:
+                if self.satisfies:
+                    raise SystemExit('Impossible solve with optimality guarantee without specific metric')
+                else:
+                    return PlanGenerationResultStatus.SOLVED_SATISFICING
             return PlanGenerationResultStatus.SOLVED_SATISFICING
 
     @staticmethod
