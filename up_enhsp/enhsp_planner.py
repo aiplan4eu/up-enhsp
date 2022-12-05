@@ -71,6 +71,7 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')  # type: ignore
         supported_kind.set_quality_metrics("ACTIONS_COST")
         supported_kind.set_quality_metrics("PLAN_LENGTH")
+        supported_kind.set_quality_metrics("FINAL_VALUE")
         return supported_kind
 
     @staticmethod
@@ -134,5 +135,5 @@ class ENHSPOptEngine(ENHSPEngine):
             return PlanGenerationResultStatus.UNSOLVABLE_PROVEN
         else:
             if not problem.quality_metrics:
-                raise Exception('Impossible solve with optimality guarantee without specific metric')
+                return PlanGenerationResultStatus.SOLVED_SATISFICING
             return PlanGenerationResultStatus.SOLVED_OPTIMALLY
