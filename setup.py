@@ -15,7 +15,7 @@ import shutil
 ENHSP_dst = './up_enhsp/ENHSP'
 ENHSP_PUBLIC = 'ENHSP-Public'
 COMPILE_CMD = './compile'
-ENHSP_TAG = 'enhsp20-0.9.4'
+ENHSP_TAG = 'enhsp20-0.9.7'
 ENHSP_REPO = 'https://gitlab.com/enricos83/ENHSP-Public'
 JDK_REQUIRE = 17
 
@@ -35,7 +35,7 @@ def check_version_jdk():
 
 def install_ENHSP():
     if not check_version_jdk():
-        raise ValueError(f.'ENHSP require jdk version >= {JDK_REQUIRE}')
+        raise ValueError(f'ENHSP require jdk version >= {JDK_REQUIRE}')
     subprocess.run(['git', 'clone', '-b', ENHSP_TAG, ENHSP_REPO])
     shutil.rmtree(ENHSP_dst,ignore_errors=True)
     shutil.move(ENHSP_PUBLIC, ENHSP_dst)
@@ -62,7 +62,7 @@ class InstallENHSPdevelop(develop):
 
 
 setup(name='up_enhsp',
-      version='0.0.7',
+      version='0.0.11',
       description='up_enhsp',
       author='UNIBS Team',
       author_email='enrico.scala@unibs.it',

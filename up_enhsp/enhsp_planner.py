@@ -49,11 +49,6 @@ class ENHSPEngine(PDDLPlanner):
         elif plan is None:
             return PlanGenerationResultStatus.UNSOLVABLE_PROVEN
         else:
-            if not problem.quality_metrics:
-                if self.satisfies:
-                    raise SystemExit('Impossible solve with optimality guarantee without specific metric')
-                else:
-                    return PlanGenerationResultStatus.SOLVED_SATISFICING
             return PlanGenerationResultStatus.SOLVED_SATISFICING
 
     @staticmethod
@@ -77,6 +72,7 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')  # type: ignore
         supported_kind.set_quality_metrics("ACTIONS_COST")
         supported_kind.set_quality_metrics("PLAN_LENGTH")
+        supported_kind.set_quality_metrics("FINAL_VALUE")
         return supported_kind
 
     @staticmethod
@@ -222,4 +218,6 @@ class ENHSPOptEngine(ENHSPEngine):
         elif plan is None:
             return PlanGenerationResultStatus.UNSOLVABLE_PROVEN
         else:
+            if not problem.quality_metrics:
+                return PlanGenerationResultStatus.SOLVED_SATISFICING
             return PlanGenerationResultStatus.SOLVED_OPTIMALLY
