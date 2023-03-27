@@ -3,7 +3,7 @@ import unified_planning as up
 from unified_planning.engines import PlanGenerationResult, PlanGenerationResultStatus
 from unified_planning.model import ProblemKind
 from unified_planning.engines import PDDLPlanner, Credits, LogMessage
-from unified_planning.mixins import AnytimePlannerMixin
+from unified_planning.engines.mixins import AnytimePlannerMixin
 from typing import Optional, List, Union, Iterator, IO
 
 
@@ -91,7 +91,7 @@ class ENHSPAnytimeEngine(ENHSPEngine,AnytimePlannerMixin):
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
-                   '-s','gbfs','-h','hadd','anytime']
+                   '-s','gbfs','-h','hadd','-anytime']
         return command 
     @staticmethod
     def ensures(anytime_guarantee: up.engines.AnytimeGuarantee) -> bool:
@@ -107,11 +107,6 @@ class ENHSPAnytimeEngine(ENHSPEngine,AnytimePlannerMixin):
     ) -> Iterator["up.engines.results.PlanGenerationResult"]:
         import threading
         import queue
-
-        opts = self._options
-
-        if timeout is not None:
-            self._options.extend(["-timeout", str(timeout)])
 
         q: queue.Queue = queue.Queue()
 
@@ -165,7 +160,6 @@ class ENHSPAnytimeEngine(ENHSPEngine,AnytimePlannerMixin):
                 except OSError:
                     pass  # This can happen if the process is already terminated
             t.join()
-            self._options = opts
 
 class ENHSPSatEngine(ENHSPEngine):
 
