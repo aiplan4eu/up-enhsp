@@ -1,4 +1,4 @@
-import pkg_resources # type: ignore
+import pkg_resources 
 import unified_planning as up
 from unified_planning.engines import PlanGenerationResult, PlanGenerationResultStatus
 from unified_planning.model import ProblemKind
@@ -21,6 +21,7 @@ class ENHSPEngine(PDDLPlanner):
         super().__init__(needs_requirements=False)
         self.search_algorithm = search_algorithm
         self.heuristic = heuristic
+        self.rewrite_bool_assignments = True
 
     @property
     def name(self) -> str:
@@ -64,15 +65,19 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_conditions_kind('DISJUNCTIVE_CONDITIONS')  # type: ignore
         supported_kind.set_conditions_kind('EXISTENTIAL_CONDITIONS')  # type: ignore
         supported_kind.set_conditions_kind('UNIVERSAL_CONDITIONS')  # type: ignore
-        supported_kind.set_conditions_kind('EQUALITY')  # type: ignore
+        supported_kind.set_conditions_kind('EQUALITIES')  # type: ignore
         supported_kind.set_problem_type('SIMPLE_NUMERIC_PLANNING')  # type: ignore
         supported_kind.set_problem_type('GENERAL_NUMERIC_PLANNING')  # type: ignore
         supported_kind.set_effects_kind('INCREASE_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('DECREASE_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')  # type: ignore
-        supported_kind.set_quality_metrics("ACTIONS_COST")
-        supported_kind.set_quality_metrics("PLAN_LENGTH")
-        supported_kind.set_quality_metrics("FINAL_VALUE")
+        supported_kind.set_effects_kind('STATIC_FLUENTS_IN_BOOLEAN_ASSIGNMENTS')  # type: ignore
+        supported_kind.set_effects_kind('STATIC_FLUENTS_IN_NUMERIC_ASSIGNMENTS')  # type: ignore
+        supported_kind.set_effects_kind('FLUENTS_IN_BOOLEAN_ASSIGNMENTS')  # type: ignore
+        supported_kind.set_effects_kind('FLUENTS_IN_NUMERIC_ASSIGNMENTS')  # type: ignore
+        supported_kind.set_quality_metrics("ACTIONS_COST") # type: ignore
+        supported_kind.set_quality_metrics("PLAN_LENGTH") # type: ignore
+        supported_kind.set_quality_metrics("FINAL_VALUE") # type: ignore
         return supported_kind
 
     @staticmethod
