@@ -18,7 +18,7 @@ credits = Credits('ENHSP',
 class ENHSPEngine(PDDLPlanner):
 
     def __init__(self, search_algorithm: Optional[str] = None, heuristic: Optional[str] = None):
-        super()._init_(needs_requirements=False, rewrite_bool_assignments = True)
+        super().__init__(needs_requirements=False, rewrite_bool_assignments = True)
         self.search_algorithm = search_algorithm
         self.heuristic = heuristic
 
