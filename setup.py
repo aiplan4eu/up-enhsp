@@ -26,7 +26,7 @@ long_description = \
 """
 
 def check_version_jdk():
-    result = subprocess.check_output(['java', '--version']).decode('utf-8') 
+    result = subprocess.check_output(['java', '--version']).decode('utf-8')
     versione = result.split(" ")[1].split(".")[0]
     if int(versione) >= JDK_REQUIRE:
         return True
@@ -62,7 +62,7 @@ class InstallENHSPdevelop(develop):
 
 
 setup(name='up_enhsp',
-      version='0.0.13',
+      version='0.0.14',
       description='up_enhsp',
       author='UNIBS Team',
       author_email='enrico.scala@unibs.it',
