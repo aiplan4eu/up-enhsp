@@ -1,4 +1,4 @@
-import pkg_resources 
+import pkg_resources
 import unified_planning as up
 from unified_planning.engines import PlanGenerationResult, PlanGenerationResultStatus
 from unified_planning.model import ProblemKind
@@ -69,6 +69,7 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_problem_type('GENERAL_NUMERIC_PLANNING')  # type: ignore
         supported_kind.set_effects_kind('INCREASE_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('DECREASE_EFFECTS')  # type: ignore
+        supported_kind.set_effects_kind('FORALL_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')  # type: ignore
         supported_kind.set_effects_kind('STATIC_FLUENTS_IN_BOOLEAN_ASSIGNMENTS')  # type: ignore
         supported_kind.set_effects_kind('STATIC_FLUENTS_IN_NUMERIC_ASSIGNMENTS')  # type: ignore
@@ -77,6 +78,8 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_quality_metrics("ACTIONS_COST") # type: ignore
         supported_kind.set_quality_metrics("PLAN_LENGTH") # type: ignore
         supported_kind.set_quality_metrics("FINAL_VALUE") # type: ignore
+        supported_kind.set_actions_cost_kind("STATIC_FLUENTS_IN_ACTIONS_COST") # type: ignore
+        supported_kind.set_actions_cost_kind("FLUENTS_IN_ACTIONS_COST") # type: ignore
         return supported_kind
 
     @staticmethod
@@ -96,13 +99,13 @@ class ENHSPAnytimeEngine(ENHSPEngine,AnytimePlannerMixin):
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
                    '-s','gbfs','-h','hadd','-anytime']
-        return command 
+        return command
     @staticmethod
     def ensures(anytime_guarantee: up.engines.AnytimeGuarantee) -> bool:
         if anytime_guarantee == up.engines.AnytimeGuarantee.INCREASING_QUALITY:
             return True
         return False
-    
+
     def _get_solutions(
         self,
         problem: "up.model.AbstractProblem",
@@ -194,6 +197,8 @@ class ENHSPOptEngine(ENHSPEngine):
     def supported_kind() -> 'ProblemKind':
         supported_kind = ENHSPEngine.supported_kind()
         supported_kind.unset_problem_type('GENERAL_NUMERIC_PLANNING')
+        supported_kind.unset_effects_kind('FLUENTS_IN_NUMERIC_ASSIGNMENTS')
+        supported_kind.unset_actions_cost_kind("FLUENTS_IN_ACTIONS_COST")
         return supported_kind
 
     @staticmethod
