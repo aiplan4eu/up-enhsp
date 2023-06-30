@@ -2,8 +2,7 @@ import pkg_resources
 import unified_planning as up
 from unified_planning.engines import PlanGenerationResult, PlanGenerationResultStatus
 from unified_planning.model import ProblemKind
-from unified_planning.engines import PDDLPlanner, Credits, LogMessage
-from unified_planning.engines.mixins import AnytimePlannerMixin
+from unified_planning.engines import PDDLPlanner, PDDLAnytimePlanner, Credits, LogMessage
 from typing import Optional, List, Union, Iterator, IO
 
 
@@ -14,6 +13,7 @@ credits = Credits('ENHSP',
                   'GPL',
                   'Expressive Numeric Heuristic Search Planner.',
                   'ENHSP is a planner supporting (sub)optimal classical and numeric planning with linear and non-linear expressions.')
+
 
 class ENHSPEngine(PDDLPlanner):
 
@@ -90,83 +90,33 @@ class ENHSPEngine(PDDLPlanner):
     def get_credits(**kwargs) -> Optional['Credits']:
         return credits
 
-class ENHSPAnytimeEngine(ENHSPEngine,AnytimePlannerMixin):
+
+class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
     @property
     def name(self) -> str:
-        return 'OPT-enhsp'
+        return 'Anytime-enhsp'
 
-    def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
+    def _get_anytime_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
                    '-s','gbfs','-h','hadd','-anytime']
         return command
+
     @staticmethod
     def ensures(anytime_guarantee: up.engines.AnytimeGuarantee) -> bool:
         if anytime_guarantee == up.engines.AnytimeGuarantee.INCREASING_QUALITY:
             return True
         return False
 
-    def _get_solutions(
-        self,
-        problem: "up.model.AbstractProblem",
-        timeout: Optional[float] = None,
-        output_stream: Optional[IO[str]] = None,
-    ) -> Iterator["up.engines.results.PlanGenerationResult"]:
-        import threading
-        import queue
+    def _starting_plan_str(self) -> str:
+        return "Found Plan:"
 
-        q: queue.Queue = queue.Queue()
+    def _ending_plan_str(self) -> str:
+        return "Plan-Length:"
 
-        class Writer(up.AnyBaseClass):
-            def __init__(self, os, q, engine):
-                self._os = os
-                self._q = q
-                self._engine = engine
-                self._plan = []
-                self._storing = False
+    def _parse_plan_line(self, plan_line: str) -> str:
+        return plan_line.split(":")[1]
 
-            def write(self, txt: str):
-                if self._os is not None:
-                    self._os.write(txt)
-                for l in txt.splitlines():
-                    if "Found Plan:" in l:
-                        self._storing = True
-                    elif "Plan-Length:" in l:
-                        plan_str = "\n".join(self._plan)
-                        plan = self._engine._plan_from_str(
-                            problem, plan_str, self._engine._writer.get_item_named
-                        )
-                        res = PlanGenerationResult(
-                            PlanGenerationResultStatus.INTERMEDIATE,
-                            plan=plan,
-                            engine_name=self._engine.name,
-                        )
-                        self._q.put(res)
-                        self._plan = []
-                        self._storing = False
-                    elif self._storing and l:
-                        self._plan.append(l.split(":")[1])
-
-        def run():
-            writer: IO[str] = Writer(output_stream, q, self)
-            res = self._solve(problem, output_stream=writer)
-            q.put(res)
-
-        try:
-            t = threading.Thread(target=run, daemon=True)
-            t.start()
-            status = PlanGenerationResultStatus.INTERMEDIATE
-            while status == PlanGenerationResultStatus.INTERMEDIATE:
-                res = q.get()
-                status = res.status
-                yield res
-        finally:
-            if self._process is not None:
-                try:
-                    self._process.kill()
-                except OSError:
-                    pass  # This can happen if the process is already terminated
-            t.join()
 
 class ENHSPSatEngine(ENHSPEngine):
 
