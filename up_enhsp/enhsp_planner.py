@@ -17,20 +17,19 @@ credits = Credits('ENHSP',
 
 class ENHSPEngine(PDDLPlanner):
 
-    def __init__(self, search_algorithm: Optional[str] = None, heuristic: Optional[str] = None):
+    def __init__(self, params: Optional[str] = None):
         super().__init__(needs_requirements=False, rewrite_bool_assignments = True)
-        self.search_algorithm = search_algorithm
-        self.heuristic = heuristic
+        self.params = params
 
     @property
     def name(self) -> str:
         return 'enhsp'
 
     def _manage_parameters(self, command):
-        if self.search_algorithm is not None:
-            command += ['-s', self.search_algorithm]
-        if self.heuristic is not None:
-            command += ['-h', self.heuristic]
+        if self.params is not None:
+            command += self.params.split()
+        else:
+            command += ['-h','hadd','-s','gbfs']
         return command
 
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
@@ -116,19 +115,6 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
 
     def _parse_plan_line(self, plan_line: str) -> str:
         return plan_line.split(":")[1]
-
-
-class ENHSPSatEngine(ENHSPEngine):
-
-    @property
-    def name(self) -> str:
-        return 'SAT-enhsp'
-
-    def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
-        command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
-                   '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
-                   '-s','gbfs','-h','hadd']
-        return command
 
 
 class ENHSPOptEngine(ENHSPEngine):
