@@ -95,11 +95,12 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
     def name(self) -> str:
         return 'Anytime-enhsp'
 
+
     def _get_anytime_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
-                   '-s','gbfs','-h','hadd','-anytime']
-        return command
+                   '-s','-anytime']
+        return self._manage_parameters(command)
 
     @staticmethod
     def ensures(anytime_guarantee: up.engines.AnytimeGuarantee) -> bool:
