@@ -91,6 +91,10 @@ class ENHSPEngine(PDDLPlanner):
 
 
 class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
+    def __init__(self, params: str | None = None):
+        ENHSPEngine.__init__(self,params)
+        PDDLAnytimePlanner.__init__(self)
+
     @property
     def name(self) -> str:
         return 'Anytime-enhsp'
@@ -98,8 +102,7 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
 
     def _get_anytime_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
-                   '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
-                   '-s','-anytime']
+                   '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,'-anytime']
         return self._manage_parameters(command)
 
     @staticmethod
@@ -118,6 +121,8 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
         return plan_line.split(":")[1]
 
 
+
+    
 class ENHSPOptEngine(ENHSPEngine):
 
     @property
@@ -161,3 +166,20 @@ class ENHSPOptEngine(ENHSPEngine):
             if not problem.quality_metrics:
                 return PlanGenerationResultStatus.SOLVED_SATISFICING
             return PlanGenerationResultStatus.SOLVED_OPTIMALLY
+
+class ENHSPOptBlindEngine(ENHSPOptEngine):
+
+    @property
+    def name(self) -> str:
+        return 'BLIND-enhsp'
+
+    def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
+        command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
+                   '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
+                   '-s','WAStar','-h','blind','-ties','larger_g']
+        return command
+
+    @staticmethod
+    def supported_kind() -> 'ProblemKind':
+        supported_kind = ENHSPEngine.supported_kind()
+        return supported_kind
