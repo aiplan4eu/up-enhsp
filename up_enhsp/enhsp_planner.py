@@ -52,33 +52,34 @@ class ENHSPEngine(PDDLPlanner):
 
     @staticmethod
     def supported_kind() -> 'ProblemKind':
-        supported_kind = ProblemKind()
-        supported_kind.set_problem_class('ACTION_BASED')  # type: ignore
-        supported_kind.set_numbers('CONTINUOUS_NUMBERS')  # type: ignore
-        supported_kind.set_numbers('DISCRETE_NUMBERS')  # type: ignore
-        supported_kind.set_typing('FLAT_TYPING')  # type: ignore
-        supported_kind.set_typing('HIERARCHICAL_TYPING')  # type: ignore
-        supported_kind.set_fluents_type('NUMERIC_FLUENTS')  # type: ignore
-        supported_kind.set_conditions_kind('NEGATIVE_CONDITIONS')  # type: ignore
-        supported_kind.set_conditions_kind('DISJUNCTIVE_CONDITIONS')  # type: ignore
-        supported_kind.set_conditions_kind('EXISTENTIAL_CONDITIONS')  # type: ignore
-        supported_kind.set_conditions_kind('UNIVERSAL_CONDITIONS')  # type: ignore
-        supported_kind.set_conditions_kind('EQUALITIES')  # type: ignore
-        supported_kind.set_problem_type('SIMPLE_NUMERIC_PLANNING')  # type: ignore
-        supported_kind.set_problem_type('GENERAL_NUMERIC_PLANNING')  # type: ignore
-        supported_kind.set_effects_kind('INCREASE_EFFECTS')  # type: ignore
-        supported_kind.set_effects_kind('DECREASE_EFFECTS')  # type: ignore
-        supported_kind.set_effects_kind('FORALL_EFFECTS')  # type: ignore
-        supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')  # type: ignore
-        supported_kind.set_effects_kind('STATIC_FLUENTS_IN_BOOLEAN_ASSIGNMENTS')  # type: ignore
-        supported_kind.set_effects_kind('STATIC_FLUENTS_IN_NUMERIC_ASSIGNMENTS')  # type: ignore
-        supported_kind.set_effects_kind('FLUENTS_IN_BOOLEAN_ASSIGNMENTS')  # type: ignore
-        supported_kind.set_effects_kind('FLUENTS_IN_NUMERIC_ASSIGNMENTS')  # type: ignore
-        supported_kind.set_quality_metrics("ACTIONS_COST") # type: ignore
-        supported_kind.set_quality_metrics("PLAN_LENGTH") # type: ignore
-        supported_kind.set_quality_metrics("FINAL_VALUE") # type: ignore
-        supported_kind.set_actions_cost_kind("STATIC_FLUENTS_IN_ACTIONS_COST") # type: ignore
-        supported_kind.set_actions_cost_kind("FLUENTS_IN_ACTIONS_COST") # type: ignore
+        supported_kind = ProblemKind(version=2)
+        supported_kind.set_problem_class('ACTION_BASED')
+        supported_kind.set_typing('FLAT_TYPING')
+        supported_kind.set_typing('HIERARCHICAL_TYPING')
+        supported_kind.set_fluents_type("INT_FLUENTS")
+        supported_kind.set_fluents_type("REAL_FLUENTS")
+        supported_kind.set_conditions_kind('NEGATIVE_CONDITIONS')
+        supported_kind.set_conditions_kind('DISJUNCTIVE_CONDITIONS')
+        supported_kind.set_conditions_kind('EXISTENTIAL_CONDITIONS')
+        supported_kind.set_conditions_kind('UNIVERSAL_CONDITIONS')
+        supported_kind.set_conditions_kind('EQUALITIES')
+        supported_kind.set_problem_type('SIMPLE_NUMERIC_PLANNING')
+        supported_kind.set_problem_type('GENERAL_NUMERIC_PLANNING')
+        supported_kind.set_effects_kind('INCREASE_EFFECTS')
+        supported_kind.set_effects_kind('DECREASE_EFFECTS')
+        supported_kind.set_effects_kind('FORALL_EFFECTS')
+        supported_kind.set_effects_kind('CONDITIONAL_EFFECTS')
+        supported_kind.set_effects_kind('STATIC_FLUENTS_IN_BOOLEAN_ASSIGNMENTS')
+        supported_kind.set_effects_kind('STATIC_FLUENTS_IN_NUMERIC_ASSIGNMENTS')
+        supported_kind.set_effects_kind('FLUENTS_IN_BOOLEAN_ASSIGNMENTS')
+        supported_kind.set_effects_kind('FLUENTS_IN_NUMERIC_ASSIGNMENTS')
+        supported_kind.set_quality_metrics("ACTIONS_COST")
+        supported_kind.set_quality_metrics("PLAN_LENGTH")
+        supported_kind.set_quality_metrics("FINAL_VALUE")
+        supported_kind.set_actions_cost_kind("STATIC_FLUENTS_IN_ACTIONS_COST")
+        supported_kind.set_actions_cost_kind("FLUENTS_IN_ACTIONS_COST")
+        supported_kind.set_action_costs_kind("INT_NUMBERS_IN_ACTIONS_COST")
+        supported_kind.set_action_costs_kind("REAL_NUMBERS_IN_ACTIONS_COST")
         return supported_kind
 
     @staticmethod
@@ -122,7 +123,7 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
 
 
 
-    
+
 class ENHSPOptEngine(ENHSPEngine):
 
     @property
