@@ -15,7 +15,7 @@ import shutil
 ENHSP_dst = './up_enhsp/ENHSP'
 ENHSP_PUBLIC = 'ENHSP-Public'
 COMPILE_CMD = './compile'
-ENHSP_TAG = 'enhsp20-0.12.0'
+ENHSP_TAG = 'enhsp20-0.13.0'
 ENHSP_REPO = 'https://gitlab.com/enricos83/ENHSP-Public'
 JDK_REQUIRE = 17
 
@@ -62,7 +62,7 @@ class InstallENHSPdevelop(develop):
 
 
 setup(name='up_enhsp',
-      version='0.0.22',
+      version='0.0.23',
       description='up_enhsp',
       author='UNIBS Team',
       author_email='enrico.scala@unibs.it',
