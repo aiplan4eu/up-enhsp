@@ -92,7 +92,7 @@ class ENHSPEngine(PDDLPlanner):
 
 
 class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
-    def __init__(self, params: str | None = None):
+    def __init__(self, params: Optional[str] = None):
         ENHSPEngine.__init__(self,params)
         PDDLAnytimePlanner.__init__(self)
 
