@@ -33,7 +33,7 @@ class ENHSPEngine(PDDLPlanner):
         return command
 
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
-        base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename]
+        base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,'-npm']
         return self._manage_parameters(base_command)
 
     def _result_status(
@@ -80,6 +80,7 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_actions_cost_kind("FLUENTS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("INT_NUMBERS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("REAL_NUMBERS_IN_ACTIONS_COST")
+        supported_kind.set_time("PROCESSES")
         return supported_kind
 
     @staticmethod
