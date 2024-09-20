@@ -80,6 +80,7 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_actions_cost_kind("FLUENTS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("INT_NUMBERS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("REAL_NUMBERS_IN_ACTIONS_COST")
+        supported_kind.set_time("PROCESSES")
         return supported_kind
 
     @staticmethod
