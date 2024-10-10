@@ -143,6 +143,7 @@ class ENHSPOptEngine(ENHSPEngine):
         supported_kind.unset_problem_type('GENERAL_NUMERIC_PLANNING')
         supported_kind.unset_effects_kind('FLUENTS_IN_NUMERIC_ASSIGNMENTS')
         supported_kind.unset_actions_cost_kind("FLUENTS_IN_ACTIONS_COST")
+        supported_kind.unset_time("PROCESSES")
         return supported_kind
 
     @staticmethod
