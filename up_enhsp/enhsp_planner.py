@@ -73,6 +73,8 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_effects_kind('STATIC_FLUENTS_IN_NUMERIC_ASSIGNMENTS')
         supported_kind.set_effects_kind('FLUENTS_IN_BOOLEAN_ASSIGNMENTS')
         supported_kind.set_effects_kind('FLUENTS_IN_NUMERIC_ASSIGNMENTS')
+        supported_kind.set_effects_kind("INCREASE_CONTINUOUS_EFFECTS")
+        supported_kind.set_effects_kind("DECREASE_CONTINUOUS_EFFECTS")
         supported_kind.set_quality_metrics("ACTIONS_COST")
         supported_kind.set_quality_metrics("PLAN_LENGTH")
         supported_kind.set_quality_metrics("FINAL_VALUE")
@@ -80,6 +82,9 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_actions_cost_kind("FLUENTS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("INT_NUMBERS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("REAL_NUMBERS_IN_ACTIONS_COST")
+        supported_kind.set_time("PROCESSES")
+        supported_kind.set_time("EVENTS")
+        supported_kind.set_initial_state("UNDEFINED_INITIAL_NUMERIC")
         return supported_kind
 
     @staticmethod
