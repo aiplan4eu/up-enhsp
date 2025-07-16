@@ -33,6 +33,7 @@ def check_version_jdk():
     else:
         return False
 
+
 def install_ENHSP():
     if not check_version_jdk():
         raise ValueError(f'ENHSP require jdk version >= {JDK_REQUIRE}')
