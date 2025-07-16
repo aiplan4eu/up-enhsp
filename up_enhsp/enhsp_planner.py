@@ -73,6 +73,8 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_effects_kind('STATIC_FLUENTS_IN_NUMERIC_ASSIGNMENTS')
         supported_kind.set_effects_kind('FLUENTS_IN_BOOLEAN_ASSIGNMENTS')
         supported_kind.set_effects_kind('FLUENTS_IN_NUMERIC_ASSIGNMENTS')
+        supported_kind.set_effects_kind("INCREASE_CONTINUOUS_EFFECTS")
+        supported_kind.set_effects_kind("DECREASE_CONTINUOUS_EFFECTS")
         supported_kind.set_quality_metrics("ACTIONS_COST")
         supported_kind.set_quality_metrics("PLAN_LENGTH")
         supported_kind.set_quality_metrics("FINAL_VALUE")
@@ -80,6 +82,9 @@ class ENHSPEngine(PDDLPlanner):
         supported_kind.set_actions_cost_kind("FLUENTS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("INT_NUMBERS_IN_ACTIONS_COST")
         supported_kind.set_actions_cost_kind("REAL_NUMBERS_IN_ACTIONS_COST")
+        supported_kind.set_time("PROCESSES")
+        supported_kind.set_time("EVENTS")
+        supported_kind.set_initial_state("UNDEFINED_INITIAL_NUMERIC")
         return supported_kind
 
     @staticmethod
@@ -103,7 +108,7 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
 
     def _get_anytime_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
-                   '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,'-anytime']
+                   '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,'-anytime', '-npm']
         return self._manage_parameters(command)
 
     @staticmethod
@@ -121,6 +126,9 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
     def _parse_plan_line(self, plan_line: str) -> str:
         return plan_line.split(":")[1]
 
+    def _skip_plan_line(self, plan_line: str) -> bool:
+        return ": -----waiting---- [" in plan_line
+
 
 
 
@@ -133,7 +141,7 @@ class ENHSPOptEngine(ENHSPEngine):
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
-                   '-s','WAStar','-h','hrmax']
+                   '-s','WAStar','-h','hrmax', '-npm']
         return command
 
     @staticmethod
@@ -177,7 +185,7 @@ class ENHSPOptBlindEngine(ENHSPOptEngine):
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
         command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
-                   '-s','WAStar','-h','blind','-ties','larger_g']
+                   '-s','WAStar','-h','blind','-ties','larger_g', '-npm']
         return command
 
     @staticmethod
