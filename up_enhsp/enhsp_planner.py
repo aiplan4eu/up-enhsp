@@ -52,7 +52,7 @@ class ENHSPEngine(PDDLPlanner):
 
     @staticmethod
     def supported_kind() -> 'ProblemKind':
-        supported_kind = ProblemKind(version=2)
+        supported_kind = ProblemKind(version=3)
         supported_kind.set_problem_class('ACTION_BASED')
         supported_kind.set_typing('FLAT_TYPING')
         supported_kind.set_typing('HIERARCHICAL_TYPING')
