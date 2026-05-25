@@ -71,6 +71,9 @@ setup(name='up_enhsp',
       package_data={
           "": ["ENHSP/enhsp.jar","ENHSP/libs/*"],
       },
+      install_requires=[
+          'unified-planning>=1.3.0',
+      ],
       cmdclass={
           'build_py': InstallENHSP,
           'develop': InstallENHSPdevelop,
