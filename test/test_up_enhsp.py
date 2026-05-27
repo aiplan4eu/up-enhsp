@@ -1,8 +1,12 @@
+from pathlib import Path
+
 import unified_planning
 from unified_planning.shortcuts import *
 from unified_planning.io.pddl_reader import PDDLReader
 from unittest import TestCase
-import pkg_resources
+
+
+PDDL_DIR = Path(__file__).parent / 'PDDL'
 
 
 class ENHSPtest(TestCase):
@@ -40,7 +44,10 @@ class ENHSPtest(TestCase):
 
     def test_enhsp_from_pddl(self):
         reader = PDDLReader()
-        pddl_problem = reader.parse_problem(pkg_resources.resource_filename(__name__, 'PDDL/NumRover.pddl'), pkg_resources.resource_filename(__name__, 'PDDL/pfile1'))
+        pddl_problem = reader.parse_problem(
+            str(PDDL_DIR / 'NumRover.pddl'),
+            str(PDDL_DIR / 'pfile1'),
+        )
 
         with OneshotPlanner(name='enhsp') as planner:
             plan = planner.solve(pddl_problem)

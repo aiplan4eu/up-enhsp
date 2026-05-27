@@ -1,4 +1,4 @@
-import pkg_resources
+from importlib.resources import files
 import unified_planning as up
 from unified_planning.engines import PlanGenerationResult, PlanGenerationResultStatus
 from unified_planning.model import ProblemKind
@@ -13,6 +13,8 @@ credits = Credits('ENHSP',
                   'GPL',
                   'Expressive Numeric Heuristic Search Planner.',
                   'ENHSP is a planner supporting (sub)optimal classical and numeric planning with linear and non-linear expressions.')
+
+ENHSP_JAR = str(files(__package__).joinpath('ENHSP').joinpath('enhsp.jar'))
 
 
 class ENHSPEngine(PDDLPlanner):
@@ -33,7 +35,7 @@ class ENHSPEngine(PDDLPlanner):
         return command
 
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
-        base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'), '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,'-npm']
+        base_command = ['java', '-jar', ENHSP_JAR, '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,'-npm']
         return self._manage_parameters(base_command)
 
     def _result_status(
@@ -107,7 +109,7 @@ class ENHSPAnytimeEngine(ENHSPEngine, PDDLAnytimePlanner):
 
 
     def _get_anytime_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
-        command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
+        command = ['java', '-jar', ENHSP_JAR,
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,'-anytime', '-npm']
         return self._manage_parameters(command)
 
@@ -139,7 +141,7 @@ class ENHSPOptEngine(ENHSPEngine):
         return 'OPT-enhsp'
 
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
-        command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
+        command = ['java', '-jar', ENHSP_JAR,
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
                    '-s','WAStar','-h','hrmax', '-npm']
         return command
@@ -183,7 +185,7 @@ class ENHSPOptBlindEngine(ENHSPOptEngine):
         return 'BLIND-enhsp'
 
     def _get_cmd(self, domain_filename: str, problem_filename: str, plan_filename: str) -> List[str]:
-        command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP/enhsp.jar'),
+        command = ['java', '-jar', ENHSP_JAR,
                    '-o', domain_filename, '-f', problem_filename, '-sp', plan_filename,
                    '-s','WAStar','-h','blind','-ties','larger_g', '-npm']
         return command
